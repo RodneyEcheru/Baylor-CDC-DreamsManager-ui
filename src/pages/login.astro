@@ -1,0 +1,99 @@
+
+---
+import AuthLayout from "../layouts/AuthLayout.astro";
+import { website, apiUrl } from "../components/modules/data.js";
+import PlainFormPage from "../components/form/PlainFormPage.svelte"
+
+let form = { //
+    action: `${apiUrl}user/login`,
+    inputs: [
+        {
+            // name
+            input_type: "input",
+            width: "col-md-6 col-12",
+            label: "Username",
+            readonly: false,
+            required: true,
+            type: "text",
+            placeholder: "email or phone",
+            name: "username",
+            value: ""
+        },
+        {
+            // password
+            input_type: "input",
+            width: "col-md-6 col-12",
+            label: "Password",
+            readonly: false,
+            required: true,
+            type: "password",
+            placeholder: "******",
+            name: "password",
+            value: ""
+        },
+    ],
+    button_text: 'Login'
+}
+---
+
+<AuthLayout title="Login">
+  <main
+    class="flex w-full flex-col items-center bg-white dark:bg-navy-700 lg:max-w-md"
+  >
+    <div class="flex w-full max-w-sm grow flex-col justify-center p-5">
+      <div class="text-center">
+        <img
+          class="mx-auto size-16 lg:hidden"
+          src="images/app-logo.svg"
+          alt="logo"
+        />
+        <div class="mt-4">
+          <h2 class="text-2xl font-semibold text-slate-600 dark:text-navy-100">
+            Welcome To {website.name}
+          </h2>
+          <p class="text-slate-400 dark:text-navy-300">
+            Please enter your credentials to continue
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-10 flex space-x-4">
+        <a
+          href="/register"
+          class="btn w-full space-x-3 border border-slate-300 font-medium text-slate-800 hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-450 dark:text-navy-50 dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90"
+        >
+          <span>Create Account</span>
+        </a>
+        <div class="mx-4 flex flex-col items-center space-y-3">
+          <div class="w-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
+          <p>OR</p>
+          <div class="w-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
+        </div>
+        <a
+          href="/"
+          class="btn w-full space-x-3 border border-slate-300 font-medium text-slate-800 hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-450 dark:text-navy-50 dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90"
+        >
+          <span>Home</span>
+        </a>
+      </div>
+      <div class="my-7 flex items-center space-x-3">
+        <div class="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
+        <p class="text-tiny+ uppercase">Enter your credentials</p>
+
+        <div class="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
+      </div>
+
+      <PlainFormPage client:only="svelte" data={form} />
+      
+      <div class="mt-4 text-center text-xs+">
+        <p class="line-clamp-1">
+          <span>Don't have an account? </span>
+          <a
+            class="text-primary transition-colors hover:text-primary-focus dark:text-accent-light dark:hover:text-accent"
+            href="/register">Sign In</a
+          >
+        </p>
+      </div>
+    </div>
+  </main>
+</AuthLayout>

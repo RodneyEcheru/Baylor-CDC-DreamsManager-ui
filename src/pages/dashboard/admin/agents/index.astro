@@ -1,0 +1,161 @@
+---
+import AdminLayout from '../../../../layouts/AdminLayout.astro'
+import { apiUrl, fetchData } from "../../../../components/modules/data.js";
+import PlainFormPage from "../../../../components/form/PlainFormPage.svelte"
+import LatestItems from "../../../../components/pages/items/LatestItems.svelte"
+import TableComponent from "../../../../components/tables/TableComponent.svelte"
+
+// retrieve user
+const user = Astro.locals.user;
+
+// fetch products options
+const productsUrl = `${apiUrl}products/products_select_array`
+const products = await fetchData(productsUrl);
+const productsOptions = products.server_data
+
+// fetch stage options
+const stagesUrl = `${apiUrl}stages/select_array`
+const stages = await fetchData(stagesUrl);
+const stagesOptions = stages.server_data
+
+let form = { //
+    action: `${apiUrl}agents/add`,
+    inputs: [
+    {
+        // name
+        input_type: "input",
+        width: "col-md-6 col-12",
+        label: "Full Name",
+        readonly: false,
+        required: true,
+        type: "text",
+        placeholder: "Name of new agent",
+        name: "name",
+        value: ""
+        },
+    {
+        // email
+        input_type: "input",
+        width: "col-md-6 col-12",
+        label: "Email",
+        readonly: false,
+        required: true,
+        type: "email",
+        placeholder: "Email of new agent",
+        name: "email",
+        value: ""
+        },
+    {
+        // phone
+        input_type: "input",
+        width: "col-md-6 col-12",
+        label: "Phone",
+        readonly: false,
+        required: true,
+        type: "text",
+        placeholder: "Phone of new agent",
+        name: "phone",
+        value: ""
+        },
+    {
+        // address
+        input_type: "input",
+        width: "col-md-6 col-12",
+        label: "Address",
+        readonly: false,
+        required: true,
+        type: "text",
+        placeholder: "Address of new agent",
+        name: "address",
+        value: ""
+        },
+    {
+        // products select
+        input_type: "select",
+        width: "col-md-6 col-12",
+        label: "Product",
+        readonly: false,
+        required: true,
+        type: "text",
+        placeholder: "Select a product",
+        name: "product_id",
+        options: productsOptions
+        },
+    {
+        // stages select
+        input_type: "select",
+        width: "col-md-6 col-12",
+        label: "Agent Stage",
+        readonly: false,
+        required: true,
+        type: "text",
+        placeholder: "agent stage",
+        name: "stage_id",
+        options: stagesOptions
+        },
+    {
+        // user id
+        input_type: "hidden",
+        name: "user_id",
+        value: user.id
+        },
+    ],
+    button_text: 'Submit'
+    }
+
+const agentsUrl = `agents/paginated_report/1/20`;
+const metadata = {
+    title: `Agents`,
+    description: 'Agents registered in the system',
+    }
+const button = {
+    url: `/dashboard/admin/agents/`,
+    text: 'Add Agent'
+    }
+---
+
+<AdminLayout title="Dashboard">
+    <div class="mt-5 grid grid-cols-12 gap-4 sm:gap-5 lg:gap-6">
+        <div class="col-span-12 space-y-4 sm:space-y-5 lg:col-span-12 lg:space-y-6 xl:col-span-12">
+
+            <LatestItems
+                    url={`${apiUrl}agents/latest/4`}
+                    title="Latest Agents"
+                    linkText="View All agents"
+                    linkUrl="#"
+                    loadingText="Fetching agents"
+                    dataTitleProperty="fullname"
+                    dataSubtitleProperty="default_role"
+                    client:only="svelte"
+            />
+
+
+            <div>
+
+                <div class="flex items-center space-x-4 py-5 lg:py-6">
+                    <h2 class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">
+                        Agents
+                    </h2>
+                    <div class="hidden h-full py-1 sm:flex">
+                        <div class="h-full w-px bg-slate-300 dark:bg-navy-600"></div>
+                    </div>
+                    <ul class="hidden flex-wrap items-center space-x-2 sm:flex">
+                        <li class="flex items-center space-x-2">
+                            <a class="text-primary transition-colors hover:text-primary-focus dark:text-accent-light dark:hover:text-accent"
+                               href="#">All</a>
+                            <svg x-ignore="" xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none"
+                                 viewbox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </li>
+                        <li>Agents</li>
+                    </ul>
+                </div>
+
+                <TableComponent endpoint={agentsUrl} {metadata} {button} client:only="svelte"/>
+
+            </div>
+        </div>
+    </div>
+</AdminLayout>

@@ -1,0 +1,30 @@
+
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro'
+import { website, apiUrl } from '../../../components/modules/data'
+import DashboardFolder from '../../../components/pages/dashboard/DashboardFolder.svelte'
+
+// fetch user details
+const user = Astro.locals.user;
+---
+
+
+<AdminLayout title="Dashboard">
+
+    <div class="py-5 text-center lg:py-6">
+        <p class="text-sm uppercase">Welcome {user.last_name}, <br/><br/>You're account has not been activated yet.</p>
+    </div>
+    <div class="grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-5 lg:gap-6">
+        <div class="card">
+            <div class="px-4 pb-8 text-center sm:px-5">
+                <h4 class="text-lg font-semibold text-slate-700 dark:text-navy-100">
+                    Account Status
+                </h4>
+                <p class="pt-3">
+                    Pending Activation, Contact your administrator to activate your account.
+                </p>
+            </div>
+        </div>
+    </div>
+
+</AdminLayout>
